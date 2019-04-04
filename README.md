@@ -10,12 +10,15 @@
   <h2 class="display-5">Contributors:</h2>
   <p>
     <ul>
-        <li>
-            <a href="https://github.com/idilhanhan" title="annapecini">Idil Hanhan</a>
-        </li>
-        <li>
-            <a href="https://github.com/WilliamHerrgott" title="WilliamHerrgott">William Herrgott</a>
-        </li>
+      <li>
+        <a href="https://github.com/idilhanhan" title="IdilHanhan">Idil Hanhan</a>
+      </li>
+      <li>
+        <a href="https://github.com/WilliamHerrgott" title="WilliamHerrgott">William Herrgott</a>
+      </li>
+      <li>
+        <a href="https://github.com/4DChess" title="JonasBluhme">Jonas Bluhme</a>
+      </li>
     </ul>
   </p>
  </div>

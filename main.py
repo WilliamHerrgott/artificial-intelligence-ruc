@@ -5,11 +5,10 @@ import numpy as np
 from keras.models import Sequential, Model, InputLayer
 from keras.layers import Dense
 
+from cryptory import Cryptory
 
-# change the name of this file to your own path
-fileName = "bitcoin-historical-data/coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv"
-
-with open(fileName, 'r') as csvFile:
-    data = csv.reader(csvFile)
-
-csvFile.close()
+crypto_data = Cryptory(from_date = "2014-01-01")
+bitcoin_data = crypto_data.extract_coinmarketcap("bitcoin")
+# The total number of data: 1925 -- randomly split this into train(1165), validate(380), test(380)
+count_row = bitcoin_data.shape[0]
+print(count_row)

@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+from sklearn.preprocessing import MinMaxScaler
 from cryptory import Cryptory
 
 
@@ -18,6 +18,7 @@ class MyDataManager():
                 del self.bitcoin_data[col]
 
 
+    #TODO figure out what to do with windows
     #def create_window(self, data, window_length):
         # Create batches with the given sequence length
     #    data_with_window = []
@@ -27,8 +28,11 @@ class MyDataManager():
 #        return data_with_window
 
 
-    #def normalise(self, window):
-        # Normalise the given window
+    #TODO normalise the data
+    def normalise(self):
+        sc = MinMaxScaler()
+        self.bitcoin_data = sc.fit_transform(self.bitcoin_data)
+
     #    pass
 
     def format_to_3d(self, df_to_reshape):
@@ -45,6 +49,7 @@ class MyDataManager():
     def data_split(self,train_size=0.6, test_size=0.2): # just followed the example
 
         self.clean_data()
+        self.normalise()
         data = np.array(self.bitcoin_data)
         # Calculate the splitting indices
         train_split = int(round(train_size * data.shape[0]))

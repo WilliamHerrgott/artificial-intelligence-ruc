@@ -21,11 +21,11 @@ class MyDataManager():
     #TODO figure out what to do with windows
     #def create_window(self, data, window_length):
         # Create batches with the given sequence length
-    #    data_with_window = []
-    #    for i in range(len(data)-window_length+1):
-    #        data_with_window.append(data[i:i+window_length])
+     #   data_with_window = []
+     #   for i in range(len(data)-window_length+1):
+     #       data_with_window.append(data[i:i+window_length])
 
-#        return data_with_window
+      #  return data_with_window
 
 
     #TODO normalise the data
@@ -33,7 +33,6 @@ class MyDataManager():
         sc = MinMaxScaler()
         self.bitcoin_data = sc.fit_transform(self.bitcoin_data)
 
-    #    pass
 
     def format_to_3d(self, df_to_reshape):
 

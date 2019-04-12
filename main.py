@@ -24,6 +24,16 @@ def main():
     print("y: \n", bitcoin_y.shape)
     print(bitcoin_y)
 
+    #print(bitcoin_x.shape[1])
+
+    # Build the model
+    model = Sequential()
+    model.add(LSTM(units=50, input_shape=(bitcoin_x.shape[1], 1))) # 128 -- neurons**?
+    model.add(Dropout(0.2))
+    model.add(Dense(units=1, activation="softmax"))  # activation function could be different
+    model.compile(optimizer="adam", loss="mse")  # mse could be used for loss, look into optimiser
+
+    model.fit(bitcoin_x, bitcoin_y,epochs=10, batch_size=8)
 
 
 if __name__ == '__main__':
@@ -31,9 +41,3 @@ if __name__ == '__main__':
 
 
 
-# Build the model
-#model = Sequential()
-#model.add(LSTM(128), input_shape=...)  # 128 -- neurons ;
-#model.add(Dropout(0.25))
-#model.add(Dense(units=..., activation="softmax"))  # activation function could be different
-#model.compile(loss="mae", optimizer="adam")  # mse could be used for loss, look into optimiser

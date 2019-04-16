@@ -34,26 +34,17 @@ class MyDataManager():
         self.bitcoin_data = sc.fit_transform(self.bitcoin_data)
 
 
-    def format_to_3d(self, df_to_reshape):
-
-        if (isinstance(df_to_reshape, list)):
-            for i in range(len(df_to_reshape)):
-                reshaped_df = np.array(df_to_reshape[i])
-                df_to_reshape[i] = np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
-        else:
-            reshaped_df = np.array(df_to_reshape)
-            return np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
-
-
     def data_split(self,train_size=0.6, test_size=0.2): # just followed the example
 
         self.clean_data()
         self.normalise()
         data = np.array(self.bitcoin_data)
+        
         # Calculate the splitting indices
         train_split = int(round(train_size * data.shape[0]))
         test_split = int(train_split + round(test_size * data.shape[0]))
-        # Shuffle and Split the data into train, validate and test
+
+        # Split the data into train, validate and test
         train_data = data[:train_split]
         validate_data = data[train_split:test_split]
         test_data = data[test_split:]

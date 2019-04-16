@@ -56,9 +56,10 @@ class MyDataManager():
         x_validate, y_validate = validate_data[:len(validate_data)-1], validate_data[1:]
         x_test, y_test = test_data[:len(train_data)-1], test_data[1:]
 
-        result = self.format_to_3d([x_train, y_train, x_validate, y_validate, x_test, y_test])
+        result = self.format_to_3d([x_train, x_validate, x_test])
+        result += [y_train, y_validate, y_test]
 
-        return result #TODO list?
+        return result
 
 
     def format_to_3d(self, df_to_reshape):

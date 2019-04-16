@@ -1,7 +1,9 @@
-import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
+import pandas as pd
+
 from cryptory import Cryptory
+from matplotlib import pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
 
 
 class MyDataManager():
@@ -10,7 +12,7 @@ class MyDataManager():
         self.date = date
         self.crypto_data = Cryptory(from_date = self.date)
         self.bitcoin_data = self.crypto_data.extract_coinmarketcap("bitcoin")
-
+        self.sc = MinMaxScaler()
 
     def clean_data(self):
         for col in self.bitcoin_data.columns:
@@ -30,8 +32,7 @@ class MyDataManager():
 
     #TODO normalise the data
     def normalise(self):
-        sc = MinMaxScaler()
-        self.bitcoin_data = sc.fit_transform(self.bitcoin_data)
+        self.bitcoin_data = self.sc.fit_transform(self.bitcoin_data)
 
 
     def data_split(self,train_size=0.6, test_size=0.2): # just followed the example
@@ -39,7 +40,7 @@ class MyDataManager():
         self.clean_data()
         self.normalise()
         data = np.array(self.bitcoin_data)
-        
+
         # Calculate the splitting indices
         train_split = int(round(train_size * data.shape[0]))
         test_split = int(train_split + round(test_size * data.shape[0]))
@@ -72,3 +73,14 @@ class MyDataManager():
         else:
             reshaped_df = np.array(df_to_reshape)
             return np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
+
+
+    def plot(self, predicted_result, real_value):
+        predicted_result = self.sc.inverse_transform(predicted_result)
+        plt.plot(real_value, color='pink', label='Real Price')
+        plt.plot(predicted_result, color='blue', label='Predicted Price')
+        plt.title('Bitcoin Prediction')
+        plt.xlabel('Time')
+        plt.ylabel('Prices')
+        plt.legend()
+        plt.show()

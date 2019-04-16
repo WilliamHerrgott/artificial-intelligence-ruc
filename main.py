@@ -35,9 +35,9 @@ def main():
 
     model.fit(bitcoin_x, bitcoin_y,epochs=10, batch_size=8)
 
+    predicted_stock_price = model.predict(val_x)
+    dm.plot(predicted_stock_price, val_y)
+
 
 if __name__ == '__main__':
     main()
-
-
-

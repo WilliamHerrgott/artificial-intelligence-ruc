@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 from cryptory import Cryptory
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -12,7 +12,9 @@ class MyDataManager():
         self.date = date
         self.crypto_data = Cryptory(from_date = self.date)
         self.bitcoin_data = self.crypto_data.extract_coinmarketcap("bitcoin")
+
         self.sc = MinMaxScaler()
+
 
     def clean_data(self):
         for col in self.bitcoin_data.columns:
@@ -31,19 +33,24 @@ class MyDataManager():
 
 
     #TODO normalise the data
-    def normalise(self):
-        self.bitcoin_data = self.sc.fit_transform(self.bitcoin_data)
+    # def normalise(self):
+    #     return self.sc.fit_transform(self.bitcoin_data)
+    #     print (self.bitcoin_data)
 
 
     def data_split(self,train_size=0.6, test_size=0.2): # just followed the example
 
         self.clean_data()
-        self.normalise()
+        # self.bitcoin_data = self.bitcoin_data.iloc[:,1:2].values
+        print(self.bitcoin_data)
+        self.bitcoin_data = self.sc.fit_transform(self.bitcoin_data)
         data = np.array(self.bitcoin_data)
 
         # Calculate the splitting indices
         train_split = int(round(train_size * data.shape[0]))
         test_split = int(train_split + round(test_size * data.shape[0]))
+
+        print("HERE -->", train_split, test_split, data.shape[0])
 
         # Split the data into train, validate and test
         train_data = data[:train_split]
@@ -76,7 +83,12 @@ class MyDataManager():
 
 
     def plot(self, predicted_result, real_value):
-        predicted_result = self.sc.inverse_transform(predicted_result)
+        # predicted_result = self.sc.inverse_transform(predicted_result)
+        real_value = self.sc.inverse_transform(real_value)
+        print(real_value)
+        print("-- - - - -- - - - - -")
+        print(predicted_result)
+
         plt.plot(real_value, color='pink', label='Real Price')
         plt.plot(predicted_result, color='blue', label='Predicted Price')
         plt.title('Bitcoin Prediction')

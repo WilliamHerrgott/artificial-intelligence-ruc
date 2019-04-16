@@ -28,14 +28,14 @@ def main():
 
     # Build the model
     model = Sequential()
-    model.add(LSTM(units=50, input_shape=(bitcoin_x.shape[1], 1))) # 128 -- neurons**?
+    model.add(LSTM(units=4, input_shape=(None, 1))) # 128 -- neurons**?
     model.add(Dropout(0.2))
     model.add(Dense(units=1, activation="softmax"))  # activation function could be different
-    model.compile(optimizer="adam", loss="mse")  # mse could be used for loss, look into optimiser
+    model.compile(optimizer="adam", loss="mean_squared_error")  # mse could be used for loss, look into optimiser
 
-    model.fit(bitcoin_x, bitcoin_y,epochs=10, batch_size=8)
+    model.fit(bitcoin_x, bitcoin_y,epochs=50, batch_size=32)
 
-    predicted_stock_price = model.predict(val_x)
+    predicted_stock_price = model.predict(bitcoin_x)
     dm.plot(predicted_stock_price, val_y)
 
 

@@ -33,10 +33,10 @@ def main():
     model.add(Dense(units=1, activation="softmax"))  # activation function could be different
     model.compile(optimizer="adam", loss="mean_squared_error")  # mse could be used for loss, look into optimiser
 
-    model.fit(bitcoin_x, bitcoin_y,epochs=50, batch_size=32)
+    model.fit(bitcoin_x, bitcoin_y,epochs=10, batch_size=32)
 
-    predicted_stock_price = model.predict(bitcoin_x)
-    dm.plot(predicted_stock_price, val_y)
+    # predicted_stock_price = model.predict(bitcoin_x)
+    dm.plot(test_y, model)
 
 
 if __name__ == '__main__':

@@ -82,9 +82,22 @@ class MyDataManager():
             return np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
 
 
-    def plot(self, predicted_result, real_value):
+    def plot(self, real_value, model):
+        input = real_value
+        input = self.sc.transform(input)
+        input = self.format_to_3d(input)
+        predicted_result = model.predict(input)
         # predicted_result = self.sc.inverse_transform(predicted_result)
+        print(input.shape, input.ndim, input)
+
         real_value = self.sc.inverse_transform(real_value)
+        # predicted_result = self.sc.transform(predicted_result)
+        # predicted_result = np.reshape(predicted_result, (20, 1, 1))
+        # predicted_result = model.predict(predicted_result)
+        # predicted_result = self.sc.inverse_transform(predicted_result)
+
+        # real_value = self.sc.inverse_transform(real_value)
+
         print(real_value)
         print("-- - - - -- - - - - -")
         print(predicted_result)

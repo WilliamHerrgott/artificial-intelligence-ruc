@@ -23,13 +23,13 @@ class MyDataManager():
 
 
     #TODO figure out what to do with windows
-    #def create_window(self, data, window_length):
-        # Create batches with the given sequence length
-     #   data_with_window = []
-     #   for i in range(len(data)-window_length+1):
-     #       data_with_window.append(data[i:i+window_length])
-
-      #  return data_with_window
+    # def create_window(self, data, window_length):
+    #     # Create batches with the given sequence length
+    #     data_with_window = []
+    #     for i in range(len(data)-window_length+1):
+    #        data_with_window.append(data[i:i+window_length])
+    #
+    #    return data_with_window
 
 
     #TODO normalise the data
@@ -49,7 +49,6 @@ class MyDataManager():
         # Split the data into train, validate and test
         train_data = training_set[365:]
         # validate_data = data[train_split:test_split]
-        test_data = training_set[:364]
 
         # Split the data into x and y
         x_train, y_train = train_data[:len(train_data)-1], train_data[1:]
@@ -66,31 +65,27 @@ class MyDataManager():
         test_set = self.sc.transform(test_set)
         test_data = test_set[:364]
 
-        x_test, y_test = test_data[:len(test_data) - 1], test_data[1:]
+        # x_test, y_test = test_data[:len(test_data) - 1], test_data[1:]
 
-        return self.format_to_3d(x_test), y_test
+        return test_data
 
 
     def plot(self, real_value, model):
         input = real_value
-        input = self.sc.transform(input)
-        input = self.format_to_3d(input)
+        input = self.sc.inverse_transform(input)
+        input = np.reshape(input, (364, 1, 1))
+
         predicted_result = model.predict(input)
+        print(predicted_result)
         # predicted_result = self.sc.inverse_transform(predicted_result)
-        print(input.shape, input.ndim, input)
+        # print(input.shape, input.ndim, input)
 
         real_value = self.sc.inverse_transform(real_value)
-        # predicted_result = self.sc.transform(predicted_result)
-        # predicted_result = np.reshape(predicted_result, (20, 1, 1))
-        # predicted_result = model.predict(predicted_result)
-        # predicted_result = self.sc.inverse_transform(predicted_result)
 
-        # real_value = self.sc.inverse_transform(real_value)
-
-        print(real_value)
-        print("-- - - - -- - - - - -")
-        print(predicted_result)
-
+        # print(real_value)
+        # print("-- - - - -- - - - - -")
+        # print(predicted_result)
+        #
         plt.plot(real_value, color='pink', label='Real Price')
         plt.plot(predicted_result, color='blue', label='Predicted Price')
         plt.title('Bitcoin Prediction')
@@ -101,12 +96,5 @@ class MyDataManager():
 
 
     def format_to_3d(self, df_to_reshape):
-
-        if (isinstance(df_to_reshape, list)):
-            for i in range(len(df_to_reshape)):
-                reshaped_df = np.array(df_to_reshape[i])
-                df_to_reshape[i] = np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
-            return df_to_reshape
-        else:
-            reshaped_df = np.array(df_to_reshape)
-            return np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
+        reshaped_df = np.array(df_to_reshape)
+        return np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))

@@ -6,37 +6,27 @@ from keras.models import Sequential, Model, InputLayer
 from keras.layers import LSTM, Dropout, Dense
 from MyDataManager import MyDataManager
 
-#NOTE: can we use the code we found in github??
-
-
 def main():
 
+    # Create instance of our class
     dm = MyDataManager("2014-01-01")
-    x_train, y_train = dm.data_split()
-    # bitcoin_x = data[0]
-    # bitcoin_y = data[3]
-    # val_x = data[1]
-    # val_y = data[4]
-    # test_x = data[2]
-    # test_y = data[5]
-    # print("x: \n", bitcoin_x.shape)
-    # print(bitcoin_x)
-    # print("y: \n", bitcoin_y.shape)
-    # print(bitcoin_y)
 
-    #print(bitcoin_x.shape[1])
+    # Assign x and y train values
+    x_train, y_train = dm.create_train_data()
 
     # Build the model
     model = Sequential()
-    model.add(LSTM(units=4, input_shape=(None, 1))) # 128 -- neurons**?
+    model.add(LSTM(units=4, activation="sigmoid", input_shape=(None, 1))) # 128 -- neurons**?
     model.add(Dropout(0.2))
-    model.add(Dense(units=1, activation="sigmoid"))  # activation function could be different
+    model.add(Dense(units=1))
     model.compile(optimizer="adam", loss="mean_squared_error")  # mse could be used for loss, look into optimiser
 
-    model.fit(x_train, y_train, epochs=10, batch_size=32)
+    model.fit(x_train, y_train, epochs=75, batch_size=32)
 
+    # Assign the test value
     test_set = dm.create_test_data()
-    # predicted_stock_price = model.predict(bitcoin_x)
+
+    # Plot
     dm.plot(test_set, model)
 
 

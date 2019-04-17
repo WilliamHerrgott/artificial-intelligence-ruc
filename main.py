@@ -13,16 +13,15 @@ def main():
 
     dm = MyDataManager("2014-01-01")
     data = dm.data_split()
-    bitcoin_x = data[0]
-    bitcoin_y = data[3]
-    val_x = data[1]
-    val_y = data[4]
-    test_x = data[2]
-    test_y = data[5]
-    print("x: \n", bitcoin_x.shape)
-    print(bitcoin_x)
-    print("y: \n", bitcoin_y.shape)
-    print(bitcoin_y)
+    bitcoin_x, bitcoin_y = dm.data_split()
+    # val_x = data[1]
+    # val_y = data[4]
+    test_x, test_y = dm.create_test_data()
+    # test_y = data[3]
+    # print("x: \n", bitcoin_x.shape)
+    # print(bitcoin_x)
+    # print("y: \n", bitcoin_y.shape)
+    # print(bitcoin_y)
 
     #print(bitcoin_x.shape[1])
 

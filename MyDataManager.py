@@ -43,43 +43,32 @@ class MyDataManager():
         self.clean_data()
         # self.bitcoin_data = self.bitcoin_data.iloc[:,1:2].values
         print(self.bitcoin_data)
-        self.bitcoin_data = self.sc.fit_transform(self.bitcoin_data)
-        data = np.array(self.bitcoin_data)
-
-        # Calculate the splitting indices
-        train_split = int(round(train_size * data.shape[0]))
-        test_split = int(train_split + round(test_size * data.shape[0]))
-
-        print("HERE -->", train_split, test_split, data.shape[0])
+        training_set = self.bitcoin_data;
+        training_set = self.sc.fit_transform(training_set)
 
         # Split the data into train, validate and test
-        train_data = data[:train_split]
-        validate_data = data[train_split:test_split]
-        test_data = data[test_split:]
+        train_data = training_set[365:]
+        # validate_data = data[train_split:test_split]
+        test_data = training_set[:364]
 
         # Split the data into x and y
         x_train, y_train = train_data[:len(train_data)-1], train_data[1:]
         #x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
         #y_train = np.reshape(y_train, (y_train.shape[0], y_train.shape[1], 1))
-        x_validate, y_validate = validate_data[:len(validate_data)-1], validate_data[1:]
-        x_test, y_test = test_data[:len(train_data)-1], test_data[1:]
+        # x_validate, y_validate = validate_data[:len(validate_data)-1], validate_data[1:]
+        # x_test, y_test = test_data[:len(test_data)-1], test_data[1:]
 
-        result = self.format_to_3d([x_train, x_validate, x_test])
-        result += [y_train, y_validate, y_test]
-
-        return result
+        return self.format_to_3d(x_train), y_train
 
 
-    def format_to_3d(self, df_to_reshape):
+    def create_test_data(self):
+        test_set = self.bitcoin_data
+        test_set = self.sc.transform(test_set)
+        test_data = test_set[:364]
 
-        if (isinstance(df_to_reshape, list)):
-            for i in range(len(df_to_reshape)):
-                reshaped_df = np.array(df_to_reshape[i])
-                df_to_reshape[i] = np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
-            return df_to_reshape
-        else:
-            reshaped_df = np.array(df_to_reshape)
-            return np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
+        x_test, y_test = test_data[:len(test_data) - 1], test_data[1:]
+
+        return self.format_to_3d(x_test), y_test
 
 
     def plot(self, real_value, model):
@@ -109,3 +98,15 @@ class MyDataManager():
         plt.ylabel('Prices')
         plt.legend()
         plt.show()
+
+
+    def format_to_3d(self, df_to_reshape):
+
+        if (isinstance(df_to_reshape, list)):
+            for i in range(len(df_to_reshape)):
+                reshaped_df = np.array(df_to_reshape[i])
+                df_to_reshape[i] = np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))
+            return df_to_reshape
+        else:
+            reshaped_df = np.array(df_to_reshape)
+            return np.reshape(reshaped_df, (reshaped_df.shape[0], 1, reshaped_df.shape[1]))

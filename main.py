@@ -1,11 +1,34 @@
 import csv
+import numpy as np
+import pandas as pd
 
 from keras.models import Sequential, Model, InputLayer
-from keras.layers import Dense
+from keras.layers import LSTM, Dropout, Dense
+from MyDataManager import MyDataManager
 
-fileName = "bitcoin-historical-data/coinbaseUSD_1-min_data_2014-12-01_to_2019-01-09.csv"
+def main():
 
-with open(fileName, 'r') as csvFile:
-    data = csv.reader(csvFile)
+    # Create instance of our class
+    dm = MyDataManager("2014-01-01")
 
-csvFile.close()
+    # Assign x and y train values
+    x_train, y_train = dm.create_train_data()
+
+    # Build the model
+    model = Sequential()
+    model.add(LSTM(units=4, activation="sigmoid", input_shape=(None, 1))) # 128 -- neurons**?
+    model.add(Dropout(0.2))
+    model.add(Dense(units=1))
+    model.compile(optimizer="adam", loss="mean_squared_error")  # mse could be used for loss, look into optimiser
+
+    model.fit(x_train, y_train, epochs=75, batch_size=32)
+
+    # Assign the test value
+    test_set = dm.create_test_data()
+
+    # Plot
+    dm.plot(test_set, model)
+
+
+if __name__ == '__main__':
+    main()

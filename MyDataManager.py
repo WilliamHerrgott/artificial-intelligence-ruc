@@ -72,10 +72,11 @@ class MyDataManager():
 
     def plot(self, real_value, model):
         input = real_value
-        input = self.sc.inverse_transform(input)
+        input = self.sc.fit_transform(input)
         input = np.reshape(input, (364, 1, 1))
 
         predicted_result = model.predict(input)
+        predicted_result = self.sc.inverse_transform(predicted_result)
         print(predicted_result)
         # predicted_result = self.sc.inverse_transform(predicted_result)
         # print(input.shape, input.ndim, input)

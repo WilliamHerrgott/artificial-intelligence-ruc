@@ -1,8 +1,8 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 from cryptory import Cryptory
-import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -46,7 +46,7 @@ class MyDataManager():
         return test_data
 
 
-    # Plots the graph
+    # Plots the graph
     def plot(self, real_value, model):
         input = real_value
         input = self.sc.fit_transform(input)
@@ -54,8 +54,6 @@ class MyDataManager():
 
         predicted_result = model.predict(input)
         predicted_result = self.sc.inverse_transform(predicted_result)
-
-        real_value = self.sc.inverse_transform(real_value)
 
         plt.plot(real_value, color='pink', label='Real Price')
         plt.plot(predicted_result, color='blue', label='Predicted Price')

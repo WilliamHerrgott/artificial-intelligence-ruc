@@ -21,7 +21,7 @@ def main():
     model.add(Dense(units=1))
     model.compile(optimizer="adam", loss="mean_squared_error")  # mse could be used for loss, look into optimiser
 
-    model.fit(x_train, y_train, epochs=75, batch_size=32)
+    model.fit(x_train, y_train, epochs=200, batch_size=32)
 
     # Assign the test value
     test_set = dm.create_test_data()

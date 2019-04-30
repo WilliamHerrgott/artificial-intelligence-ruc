@@ -1,9 +1,5 @@
-import csv
-import numpy as np
-import pandas as pd
-
-from keras.models import Sequential, Model, InputLayer
-from keras.layers import LSTM, Dropout, Dense
+from keras.models import Sequential
+from keras.layers import LSTM, Dense, Dropout
 from MyDataManager import MyDataManager
 
 def main():
@@ -16,10 +12,10 @@ def main():
 
     # Build the model
     model = Sequential()
-    model.add(LSTM(units=4, activation="sigmoid", input_shape=(None, 1))) # 128 -- neurons**?
-    model.add(Dropout(0.2))
+    model.add(LSTM(units=4, activation="sigmoid", input_shape=(None, 1)))
+    model.add(Dropout(0.25))
     model.add(Dense(units=1))
-    model.compile(optimizer="adam", loss="mean_squared_error")  # mse could be used for loss, look into optimiser
+    model.compile(optimizer="adam", loss="mean_squared_error")
 
     model.fit(x_train, y_train, epochs=200, batch_size=32)
 

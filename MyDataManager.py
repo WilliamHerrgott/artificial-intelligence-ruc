@@ -9,8 +9,7 @@ from sklearn.preprocessing import MinMaxScaler
 class MyDataManager():
 
     def __init__(self, date):
-        self.date = date
-        self.crypto_data = Cryptory(from_date = self.date)
+        self.crypto_data = Cryptory(from_date = date)
         self.bitcoin_data = self.crypto_data.extract_coinmarketcap("bitcoin")
         self.sc = MinMaxScaler()
 
@@ -29,7 +28,7 @@ class MyDataManager():
 
         training_set = self.bitcoin_data;
         training_set = self.sc.fit_transform(training_set)
-        train_data = training_set[365:]
+        train_data = training_set[365:]  # around 80% of the data is used for training
 
         # Split the data into x and y
         x_train, y_train = train_data[:len(train_data)-1], train_data[1:]
@@ -54,6 +53,8 @@ class MyDataManager():
 
         predicted_result = model.predict(input)
         predicted_result = self.sc.inverse_transform(predicted_result)
+
+        print(real_value)
 
         plt.plot(real_value, color='pink', label='Real Price')
         plt.plot(predicted_result, color='blue', label='Predicted Price')
